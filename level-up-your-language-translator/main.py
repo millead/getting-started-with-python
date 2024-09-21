@@ -1,8 +1,16 @@
 import csv
 
+def intro():
+  print('Welcome to the Spanish and French language translator app. \nPlease enter an English word and press the "Enter" key.')
+  print('\nType "done" at any time to exit.')
 
+def exit():
+  print('\nThanks for using the translator app. Have a great day!')
+  
+  
 translations = {}
 
+intro()
 with open("translations.csv", "r") as words:
     reader = csv.DictReader(words, delimiter=",")
     for line in reader:
@@ -22,8 +30,10 @@ while not done:
 
   if word == "done":
     done = True
+    exit()
   elif word in translations:
-    print(translations[word])
+    print(f'\nSPANISH: {translations[word][0]}')
+    print(f'\nFRENCH: {translations[word][1]}')
   else:
-    print("Translation is not known")
+    print("\nTranslation is not known")
 
