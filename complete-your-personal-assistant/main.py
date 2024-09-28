@@ -3,11 +3,12 @@ import json
 from PersonalAssistant import PersonalAssistant
 
 #ADD CODE: open JSON file and pass data to PersonalAssistant class
-with open("todo.json", "r") as todos, open("birthdays.json", "r") as birthdays:
+with open("todo.json", "r") as todos, open("birthdays.json", "r") as birthdays, open("contacts.json", "r") as contacts:    
     todo_list = json.load(todos)
     birthday_list = json.load(birthdays)
+    contact_list = json.load(contacts)
 
-    assistant = PersonalAssistant(todo_list, birthday_list)
+    assistant = PersonalAssistant(todo_list, birthday_list, contact_list)
 
 done = False
 
@@ -24,6 +25,10 @@ How can I help you?
     4: Get Birthday
     5: Add Birthday
     6: Remove Birthday
+    **** Contacts *****
+    7: Get a Single Contact
+    8: Add a Contact
+    9: Delete a Contact
 
     Select a number or type 'Exit' to quit: 
     
@@ -62,6 +67,26 @@ How can I help you?
             print(name)
         user_input = input("\nWhich birthday do you want to remove? ")
         print(f"\n{assistant.remove_birthday(user_input)}")
+    # Get Contact
+    elif user_command == "7":
+        print("\nYour contact names are: ")
+        for name in assistant.get_contacts():
+            print(name)
+        user_input = input("\nEnter a name: ")
+        print(f"\n{assistant.get_contact(user_input)}")
+    # Add Contact
+    elif user_command == "8":
+        name = input("Add a contact name: \n")
+        title = input(f"What is {name}'s title / position? ")
+        print(f"\n{assistant.add_contact(name, title)}")
+    # Remove Contact
+    elif user_command == "9":
+        print("\nYour contact names are: ")
+        for name in assistant.get_contacts():
+            print(name)
+        user_input = input("\nWhich contact do you want to delete? ")
+        print(f"\n{assistant.remove_contact(user_input)}")
+    # Exit application
     elif user_command == "exit" or user_command == "Exit" or user_command == "EXIT":
         done = True
         print("\nGoodbye, see you soon!")
@@ -71,6 +96,7 @@ How can I help you?
 
 with open("todo.json", "w") as write_todos, open(
     "birthdays.json", "w"
-) as write_birthdays:
+) as write_birthdays, open("contacts.json", "w") as write_contacts:
     json.dump(assistant.get_todos(), write_todos)
+    json.dump(assistant.get_contacts(), write_contacts)
     json.dump(assistant.get_birthdays(), write_birthdays)
